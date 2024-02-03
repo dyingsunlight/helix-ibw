@@ -18,7 +18,7 @@ jobs:
       - name: Build and push image
         env:
           CONTEXT: ./builder/stable-diffusion-xl
-          SDXL_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:bge-large-cn-1.0
+          SDXL_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:stable-diffusion-xl-1.0
           ANIMAGINE_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}/animagine-xl-1.0
         run: |
           export DOCKER_BUILDKIT=1
