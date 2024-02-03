@@ -14,7 +14,7 @@ jobs:
         with:
           submodules: 'recursive'
           token: ${{ secrets.SUBMODULE_TOKEN }}
-      - uses: actions/checkout@v4
+      - run: df -h
       - name: Build and push image
         env:
           CONTEXT: ./builder/stable-diffusion-xl
