@@ -15,6 +15,12 @@ jobs:
           submodules: 'recursive'
           token: ${{ secrets.SUBMODULE_TOKEN }}
       - run: df -h
+      - run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
       - name: Build and push image
         env:
           CONTEXT: ./builder/stable-diffusion-xl
