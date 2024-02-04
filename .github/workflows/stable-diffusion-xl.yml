@@ -31,5 +31,5 @@ jobs:
           export PROGRESS_NO_TRUNC=1
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
           docker buildx build --platform=linux/amd64 -t $SDXL_IMAGE --target sdxl --push $CONTEXT
-          docker buildx prune --force
-          docker buildx build --platform=linux/amd64 -t $ANIMAGINE_IMAGE --target animagine --push $CONTEXT
+#          docker buildx prune --force
+#          docker buildx build --platform=linux/amd64 -t $ANIMAGINE_IMAGE --target animagine --push $CONTEXT
