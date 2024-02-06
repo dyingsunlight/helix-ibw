@@ -10,7 +10,17 @@ jobs:
     steps:
 #      - name: Set up Docker Buildx
 #        uses: docker/setup-buildx-action@v3
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+      - run: df -h
+      - run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
       - name: Build and push image
         env:
           CONTEXT: ./builder/stable-diffusion-xl
