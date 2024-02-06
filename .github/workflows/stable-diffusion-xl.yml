@@ -20,6 +20,10 @@ jobs:
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo service docker stop
+          sudo mv /var/lib/docker /mnt/docker-data
+          sudo ln -s /mnt/docker-data /var/lib/docker
+          sudo service docker start
           df -h
       - name: Build and push image
         env:
@@ -32,7 +36,11 @@ jobs:
         run: |
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
           docker build -t $SDXL_IMAGE --target sdxl --push $CONTEXT
+          df -h
           docker build -t $ANIMAGINE_IMAGE --target animagine --push $CONTEXT
+          df -h
           docker build -t $REALVIS_IMAGE --target realvisxl --push $CONTEXT
+          df -h
           docker build -t $AAM_IMAGE --target aamxl --push $CONTEXT
+          df -h
           docker build -t $PONY_IMAGE --target ponyxl --push $CONTEXT
