@@ -22,10 +22,7 @@ jobs:
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo service docker stop
           echo "Docker Stopped"
-          sudo mv /var/lib/docker /mnt/docker-data
-          echo "Docker data moved"
-          sudo ln -s /mnt/docker-data /var/lib/docker
-          echo "Docker data relinked"
+          echo '{"data-root": "/mnt/docker-data"}' > /etc/docker/daemon.json
           sudo service docker start
           echo "Docker Restarted"
           df -h
