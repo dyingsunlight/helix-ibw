@@ -5,31 +5,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
-    runs-on: ubuntu-22.04
+  sdxl:
+    runs-on: self-hosted
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-          token: ${{ secrets.SUBMODULE_TOKEN }}
-      - run: df -h
-      - run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@v4
       - name: Build and push image
         env:
           CONTEXT: ./builder/stable-diffusion-xl
-          SDXL_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:stable-diffusion-xl-1.0
-          ANIMAGINE_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}/animagine-xl-1.0
+          SDXL_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:sd-xl-1.1
+          ANIMAGINE_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:animagine-xl-1.1
+          REALVIS_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:realvis-xl-1.1
+          AAM_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:aam-xl-1.1
+          PONY_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:pony-xl-1.1
         run: |
-          export DOCKER_BUILDKIT=1
-          export PROGRESS_NO_TRUNC=1
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
-          docker buildx build --platform=linux/amd64 -t $SDXL_IMAGE --target sdxl --push $CONTEXT
-#          docker buildx prune --force
-#          docker buildx build --platform=linux/amd64 -t $ANIMAGINE_IMAGE --target animagine --push $CONTEXT
+          docker build -t $SDXL_IMAGE --target sdxl --push $CONTEXT
+          docker build -t $ANIMAGINE_IMAGE --target animagine --push $CONTEXT
+          docker build -t $REALVIS_IMAGE --target realvisxl --push $CONTEXT
+          docker build -t $AAM_IMAGE --target aamxl --push $CONTEXT
+          docker build -t $PONY_IMAGE --target ponyxl --push $CONTEXT
