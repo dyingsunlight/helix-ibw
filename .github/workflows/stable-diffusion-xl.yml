@@ -36,7 +36,7 @@ jobs:
           ANIMAGINE_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:animagine-xl-1.1
           REALVIS_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:realvis-xl-1.1
           AAM_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:aam-xl-1.1
-          PONY_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:pony-xl-1.1
+#          PONY_IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:pony-xl-1.1
         run: |
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
           docker build -t $SDXL_IMAGE --target sdxl --push $CONTEXT
@@ -46,5 +46,5 @@ jobs:
           docker build -t $REALVIS_IMAGE --target realvisxl --push $CONTEXT
           df -h
           docker build -t $AAM_IMAGE --target aamxl --push $CONTEXT
-          df -h
-          docker build -t $PONY_IMAGE --target ponyxl --push $CONTEXT
+#          df -h
+#          docker build -t $PONY_IMAGE --target ponyxl --push $CONTEXT
