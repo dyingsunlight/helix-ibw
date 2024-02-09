@@ -30,7 +30,7 @@ jobs:
       - name: Build and push image
         env:
           CONTEXT: ./builder/musicgen
-          IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:musicgen-1.0
+          IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:musicgen-1.1
         run: |
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
           docker buildx build --platform=linux/amd64 -t $IMAGE --push $CONTEXT
