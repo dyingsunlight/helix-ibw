@@ -1,0 +1,27 @@
+name: Musicgen Image
+
+# configure manual trigger
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - uses: actions/checkout@v4
+      - run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
+      - name: Build and push image
+        env:
+          CONTEXT: ./builder/musicgen
+          IMAGE: ${{ secrets.DOCKERHUB_REGISTRY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:musicgen-1.0
+        run: |
+          docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }} ${{ secrets.DOCKERHUB_REGISTRY }}
+          docker buildx build --platform=linux/amd64 -t $IMAGE --push $CONTEXT
