@@ -8,15 +8,24 @@ jobs:
   docker:
     runs-on: ubuntu-22.04
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+      - run: df -h
       - run: |
-          df -h
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo service docker stop
+          echo "Docker Stopped"
+          sudo mv /var/lib/docker /mnt/docker-data
+          echo "Docker data moved"
+          sudo ln -s /mnt/docker-data /var/lib/docker
+          echo "Docker data relinked"
+          sudo service docker start
+          echo "Docker Restarted"
           df -h
       - name: Build and push image
         env:
